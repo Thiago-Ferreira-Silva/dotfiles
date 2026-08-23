@@ -1,0 +1,134 @@
+/* ============================================================
+ * WLOGOUT THEME
+ * ============================================================ */
+
+@import url("/home/thenr/.config/theme-engine/cache/wlogout/style.css");
+
+
+/* ============================================================
+ * GLOBAL
+ * ============================================================ */
+
+* {
+    font-family: "JetBrainsMono Nerd Font";
+    font-size: 14px;
+    font-weight: 600;
+}
+
+
+/* ============================================================
+ * WINDOW
+ * ============================================================ */
+
+window {
+    background-color: alpha(@bg, 0.88);
+}
+
+
+/* ============================================================
+ * BUTTONS
+ * ============================================================ */
+
+button {
+    font-size: 20px;
+    font-weight: 600;
+
+    background-color: @surface;
+    color: @fg;
+
+    border: 1px solid @surface2;
+    border-radius: 10px;
+
+    margin: 8px;
+    padding: 18px;
+
+    transition:
+        background-color 150ms ease,
+        border-color 150ms ease,
+        color 150ms ease,
+        box-shadow 150ms ease;
+}
+
+
+/* ============================================================
+ * HOVER
+ * ============================================================ */
+
+button:hover {
+    background-color: @surface2;
+    color: @accent;
+
+    border-color: @accent;
+
+    box-shadow:
+        0 0 8px alpha(@accent, 0.35),
+        inset 0 0 8px alpha(@accent, 0.08);
+}
+
+
+/* ============================================================
+ * FOCUS
+ * ============================================================ */
+
+button:focus {
+    background-color: @surface2;
+    color: @accent;
+
+    border-color: @accent;
+
+    outline: none;
+}
+
+
+/* ============================================================
+ * INDIVIDUAL ACTIONS
+ * ============================================================ */
+
+#lock {
+    background-image: none;
+}
+
+#logout {
+    color: @danger;
+}
+
+#logout:hover {
+    color: @danger;
+    border-color: @danger;
+
+    box-shadow:
+        0 0 8px alpha(@danger, 0.35),
+        inset 0 0 8px alpha(@danger, 0.08);
+}
+
+#suspend:hover {
+    color: @accent;
+}
+
+#hibernate:hover {
+    color: @warning;
+}
+
+#reboot:hover {
+    color: @warning;
+
+    border-color: @warning;
+
+    box-shadow:
+        0 0 8px alpha(@warning, 0.35),
+        inset 0 0 8px alpha(@warning, 0.08);
+}
+
+#shutdown {
+    color: @danger;
+}
+
+#shutdown:hover {
+    color: @danger;
+    border-color: @danger;
+
+    box-shadow:
+        0 0 8px alpha(@danger, 0.35),
+        inset 0 0 8px alpha(@danger, 0.08);
+}
+

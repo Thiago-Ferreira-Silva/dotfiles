@@ -1,0 +1,65 @@
+{
+  "$schema": "/etc/xdg/swaync/configSchema.json",
+
+  "positionX": "right",
+  "positionY": "top",
+
+  "layer": "overlay",
+  "control-center-layer": "top",
+
+  "notification-window-width": 400,
+  "notification-icon-size": 48,
+
+  "timeout": 5,
+  "timeout-low": 3,
+  "timeout-critical": 0,
+
+ "fit-to-screen": false,
+ "control-center-height": -1,
+  "keyboard-shortcuts": true,
+
+  "control-center-width": 450,
+  "control-center-height": 800,
+
+  "widgets": [
+    "title",
+    "notifications",
+    "volume",
+    "buttons-grid"
+  ],
+
+  "widget-config": {
+    "title": {
+      "text": "Notificações",
+      "clear-all-button": true,
+      "button-text": "Limpar"
+    },
+    "volume": {
+      "label": "Volume",
+      "show-per-app": false,
+      "show-per-app-icon": false
+    },
+    "notifications": {
+      "vexpand": true
+    },
+    "buttons-grid": {
+      "buttons-per-row": 2,
+      "actions": [
+        {
+          "label": "",
+          "type": "toggle",
+          "active": false,
+          "command": "bluetoothctl show | grep -q 'Powered: yes' && bluetoothctl power off || bluetoothctl power on",
+          "update-command": "bluetoothctl show | grep -q 'Powered: yes' && echo true || echo false"
+        },
+        {
+          "label": "",
+          "type": "toggle",
+          "active": false,
+          "command": "swaync-client -d -sw",
+          "update-command": "swaync-client -D"
+        }
+      ]
+    }
+  }
+}

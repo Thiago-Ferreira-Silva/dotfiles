@@ -1,0 +1,224 @@
+/* ═══════════════════════════════════════════════
+   WAYBAR STYLESHEET — GRUVBOX DARK
+   ═══════════════════════════════════════════════ */
+
+/*@import url("colors.css");*/
+@import url("/home/thenr/.config/theme-engine/cache/waybar/style.css");
+
+/* ═══════════════════════════════════════════════
+   RESET E BASE
+   ═══════════════════════════════════════════════ */
+
+* {
+    border: none;
+    border-radius: 0;
+
+    font-family: "JetBrainsMono Nerd Font", "JetBrains Mono", monospace;
+    font-size: 13px;
+
+    min-height: 0;
+}
+
+window#waybar {
+    background: @background;
+    color: @foreground;
+}
+
+
+/* ═══════════════════════════════════════════════
+   ILHAS (PILLS)
+   ═══════════════════════════════════════════════ */
+
+#workspaces,
+#clock,
+#language,
+#network,
+#pulseaudio,
+/* #tray, */
+#custom-notification,
+#battery,
+#custom-power {
+    background: @surface;
+}
+
+
+/* ═══════════════════════════════════════════════
+   ILHA ESQUERDA — WORKSPACES
+   ═══════════════════════════════════════════════ */
+
+#workspaces {
+    margin-left: 0;
+
+    padding: 2px 4px;
+
+    border-radius: 10px;
+    border: 1px solid @border;
+}
+
+#workspaces button {
+    min-width: 26px;
+
+    padding: 0 6px;
+    margin: 2px;
+
+    color: @muted;
+    background: transparent;
+    border-radius: 6px;
+
+    transition:
+        color 150ms ease,
+        background 150ms ease;
+}
+
+#workspaces button:hover {
+    color: @foreground;
+    background: @surface-hover;
+}
+
+#workspaces button.active {
+    color: @accent;
+    background: @surface-alt;
+}
+
+#workspaces button.urgent {
+    color: @critical;
+    background: @surface-alt;
+}
+
+
+/* ═══════════════════════════════════════════════
+   ILHA CENTRAL — RELÓGIO
+   ═══════════════════════════════════════════════ */
+
+#clock {
+    margin: 0 20px;
+
+    padding: 0 16px;
+
+    border-radius: 10px;
+    border: 1px solid @border;
+
+    color: @foreground;
+}
+
+
+/* ═══════════════════════════════════════════════
+   ILHA DIREITA — SISTEMA & MIDIA
+   ═══════════════════════════════════════════════ */
+
+#language,
+#network,
+#pulseaudio,
+/* #tray, */
+#custom-notification,
+#battery,
+#custom-power {
+    min-height: 36px;
+    border-top: 1px solid @border;
+    border-bottom: 1px solid @border;
+}
+
+#language {
+    padding-left: 12px;
+    padding-right: 8px;
+
+    border-radius: 10px 0 0 10px;
+    border-left: 1px solid @border;
+}
+
+#network {
+    padding-left: 5px;
+    padding-right: 8px;
+}
+
+#pulseaudio {
+    padding-left: 8px;
+    padding-right: 8px;
+    font-size: 18px;
+    color: @foreground;
+}
+/*
+#tray {
+    padding-left: 8px;
+    padding-right: 8px;
+}
+*/
+
+#battery {
+    padding-left: 8px;
+    padding-right: 8px;
+    color: @foreground;
+}
+
+#custom-notification {
+    padding-left: 6px;
+    padding-right: 6px;
+}
+
+#custom-power {
+    padding-left: 6px;
+    padding-right: 12px;
+
+    border-radius: 0 10px 10px 0;
+    border-right: 1px solid @border;
+    color: @foreground;
+}
+
+
+/* ═══════════════════════════════════════════════
+   ESTADOS E CORES
+   ═══════════════════════════════════════════════ */
+
+#network.disconnected {
+    color: @muted;
+}
+
+#pulseaudio.muted {
+    color: @muted;
+}
+
+#battery.charging {
+    color: @green;
+}
+
+#battery.warning{
+    color: @warning;
+}
+
+#battery.critical{
+    color: @critical;
+}
+
+
+/* ═══════════════════════════════════════════════
+   SYSTEM TRAY
+   ═══════════════════════════════════════════════ */
+/*
+#tray > .passive {
+    opacity: 0.65;
+}
+
+#tray > .needs-attention {
+    opacity: 1;
+}
+*/
+
+
+/* ═══════════════════════════════════════════════
+   TOOLTIPS (GTK3)
+   ═══════════════════════════════════════════════ */
+
+tooltip {
+    background: @surface;
+
+    border: 1px solid @border;
+    border-radius: 8px;
+
+    padding: 8px 12px;
+
+    color: @foreground;
+}
+
+tooltip label {
+    color: @foreground;
+}

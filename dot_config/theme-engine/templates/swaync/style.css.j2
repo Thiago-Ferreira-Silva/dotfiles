@@ -1,0 +1,31 @@
+@define-color cc-bg rgba({{ background_rgb }}, {{ opacity.notifications }});
+@define-color noti-bg {{ surface }};
+@define-color noti-border {{ border }};
+@define-color border-hover {{ border_light }};
+@define-color text-color {{ foreground }};
+@define-color text-muted {{ foreground_dark if foreground_dark else muted }};
+@define-color accent {{ primary }};
+@define-color accent-hover {{ primary_light }};
+
+@define-color red {{ red }};
+@define-color green {{ green }};
+@define-color yellow {{ yellow }};
+@define-color blue {{ blue }};
+@define-color magenta {{ magenta }};
+@define-color cyan {{ cyan }};
+
+.notification {
+    background: @noti-bg;
+    border: 1px solid @noti-border;
+    border-radius: {{ radius }}px;
+    color: @text-color;
+    padding: 10px;
+    margin: 5px;
+}
+
+.control-center {
+    background: @cc-bg;
+    border: 1px solid @noti-border;
+    border-radius: {{ radius }}px;
+    color: @text-color;
+}

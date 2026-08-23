@@ -1,0 +1,30 @@
+hypr/
+├── hyprland.lua
+├── config/
+│   ├── env.lua
+│   ├── monitors.lua
+│   ├── input.lua
+│   ├── keybinds.lua
+│   ├── startup.lua
+│   ├── decoration.lua
+│   ├── animations.lua
+│   ├── layouts.lua
+│   └── rules.lua
+├── lib/
+│   ├── colors.lua
+│   └── variables.lua
+└── themes/
+    └── catppuccin.lua
+
+
+
+-- lib/colors.lua
+return {
+    bg = "0xff1e1e2e",
+    fg = "0xffcdd6f4",
+    accent = "0xff89b4fa",
+}
+
+local colors = require("lib.colors")
+
+

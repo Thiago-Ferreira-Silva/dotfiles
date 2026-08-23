@@ -1,0 +1,299 @@
+@import url("/home/thenr/.config/theme-engine/cache/swaync/style.css");
+
+@define-color bg             @cc-bg;
+@define-color bg-widget      transparent;
+@define-color bg-notification @noti-bg;
+
+@define-color border         @noti-border;
+@define-color border-hover   @border-hover;
+
+@define-color text           @text-color;
+@define-color text-muted     @text-muted;
+@define-color text-disabled  @text-muted;
+
+@define-color accent         @accent;
+@define-color accent-hover   @accent-hover;
+
+@define-color slider-bg      @noti-bg;
+@define-color slider         @accent;
+
+
+/* ═══════════════════════════════════════════
+   Base
+   ═══════════════════════════════════════════ */
+
+* {
+    font-family: JetBrainsMonoNerd;
+    font-size: 14px;
+    color: @text;
+}
+
+
+/* ═══════════════════════════════════════════
+   Control Center
+   ═══════════════════════════════════════════ */
+
+.control-center {
+    background: @bg;
+
+    margin: 2px;
+    border: 1px solid @border;
+    border-radius: 12px;
+
+    padding: 6px;
+
+    min-height: 0;
+}
+
+
+/* ═══════════════════════════════════════════
+   Widgets
+   ═══════════════════════════════════════════ */
+
+.widget {
+    background: transparent;
+
+    border: none;
+    border-radius: 0;
+
+    margin: 2px 0;
+    padding: 2px 0;
+}
+
+.widget:hover {
+    border-color: transparent;
+    background: transparent;
+}
+
+/* ═══════════════════════════════════════════
+   Scrollbars (Ocultar por padrão)
+   ═══════════════════════════════════════════ */
+
+scrollbar {
+    background: transparent;
+    opacity: 0;
+    min-width: 0;
+    min-height: 0;
+    border: none;
+}
+
+scrollbar slider,
+scrollbar trough,
+scrollbar button {
+    background: transparent;
+    opacity: 0;
+    min-width: 0;
+    min-height: 0;
+    border: none;
+}
+
+/* Ocultar a barra de rolagem do painel principal (control-center) */
+.control-center > scrollbar {
+    background: transparent;
+    opacity: 0;
+    min-width: 0;
+    min-height: 0;
+    border: none;
+}
+
+.control-center > scrollbar slider,
+.control-center > scrollbar trough,
+.control-center > scrollbar button {
+    background: transparent;
+    opacity: 0;
+    min-width: 0;
+    min-height: 0;
+    border: none;
+}
+
+
+/* Exibir e estilizar a barra de rolagem exclusivamente para a lista de notificações */
+.control-center-list scrollbar {
+    background: transparent;
+    opacity: 0.5;
+    min-width: 6px;
+}
+
+.control-center-list scrollbar:hover {
+    opacity: 1;
+}
+
+.control-center-list scrollbar slider {
+    background: @accent;
+    border-radius: 3px;
+    min-width: 6px;
+}
+
+.control-center-list scrollbar trough {
+    background: @bg-notification;
+    border-radius: 3px;
+}
+
+
+/* ═══════════════════════════════════════════
+   Título / Limpar Tudo
+   ═══════════════════════════════════════════ */
+
+.widget-title {
+    padding: 4px 8px;
+    background: transparent;
+    border: none;
+}
+
+.widget-title > label {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.widget-title > button {
+    background: @bg-notification;
+    border: 1px solid @border;
+    border-radius: 8px;
+    padding: 4px 12px;
+    color: @text;
+    transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.widget-title > button:hover {
+    background: @accent;
+    color: @bg;
+    border-color: @accent-hover;
+}
+
+
+/* ═══════════════════════════════════════════
+   Grid de Botões Compacto (Bluetooth & Não Perturbe)
+   ═══════════════════════════════════════════ */
+
+.widget-buttons-grid {
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    margin: 4px 0;
+    padding: 0;
+}
+
+.widget-buttons-grid flowboxchild > button {
+    background: @bg-notification;
+    border: 1px solid @border;
+    border-radius: 8px;
+    color: @text;
+    padding: 8px;
+    font-size: 16px;
+    margin: 2px;
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.widget-buttons-grid flowboxchild > button:hover {
+    background: @border;
+    border-color: @accent-hover;
+}
+
+.widget-buttons-grid flowboxchild > button.toggle:checked {
+    background: @accent;
+    color: @bg;
+    border-color: @accent-hover;
+}
+
+.widget-buttons-grid flowboxchild > button.toggle:checked:hover {
+    background: @accent-hover;
+}
+
+
+/* ═══════════════════════════════════════════
+   Volume
+   ═══════════════════════════════════════════ */
+
+.widget-volume {
+    background: transparent;
+    border: none;
+    padding: 4px 8px 8px;
+}
+
+.widget-volume label {
+    color: @text;
+}
+
+.widget-volume scale {
+    padding: 4px 0;
+}
+
+.widget-volume scale trough {
+    min-height: 8px;
+    background: @bg-notification;
+    border: 1px solid @border;
+    border-radius: 6px;
+}
+
+.widget-volume scale trough highlight,
+.widget-volume trough highlight {
+    min-height: 8px;
+    background: @accent;
+    border: none;
+    border-radius: 6px;
+}
+
+.widget-volume scale slider,
+.widget-volume slider {
+    min-width: 14px;
+    min-height: 14px;
+    background: @accent;
+    border: none;
+    border-radius: 50%;
+    box-shadow: none;
+}
+
+.widget-volume scale slider:hover,
+.widget-volume slider:hover {
+    background: @accent-hover;
+}
+
+/* ═══════════════════════════════════════════
+   Notifications
+   ═══════════════════════════════════════════ */
+
+.notification-row {
+    outline: none;
+}
+
+.notification {
+    background: @bg-notification;
+
+    border: 1px solid @border;
+    border-radius: 10px;
+
+    margin: 4px 0;
+    padding: 6px 8px;
+}
+
+.notification:hover {
+    border-color: @border-hover;
+}
+
+.notification-content {
+    padding: 2px;
+}
+
+.summary {
+    color: @text;
+    font-weight: bold;
+}
+
+.body {
+    color: @text-muted;
+}
+
+.control-center-list,
+.control-center-list > box,
+.notification-row {
+    background: transparent;
+}
+
+/* ═══════════════════════════════════════════
+   Disabled / Secondary text
+   ═══════════════════════════════════════════ */
+
+label:disabled {
+    color: @text-disabled;
+}
+

@@ -1,0 +1,23 @@
+{
+    "name": "Kanagawa",
+    "background": "#1f1f28",
+    "surface": "#2a2a37",
+    "foreground": "#dcd7ba",
+    "primary": "#7e9cd8",
+    "secondary": "#957fb8",
+    "red": "#c34043",
+    "green": "#76946a",
+    "yellow": "#c0a36e",
+    "blue": "#7e9cd8",
+    "magenta": "#957fb8",
+    "cyan": "#6a9589",
+    "border": "#54546d",
+    "muted": "#727169",
+    "warning": "#ffa066",
+    "radius": 14,
+    "opacity": {
+        "bar": 0.90,
+        "notifications": 0.95,
+        "lockscreen": 0.80
+    }
+}

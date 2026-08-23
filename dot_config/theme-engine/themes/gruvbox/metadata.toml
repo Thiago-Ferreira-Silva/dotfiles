@@ -1,0 +1,4 @@
+name = "Gruvbox Dark"
+author = "morhetz"
+description = "Retro groove color scheme for Vim & Linux GTK/Hyprland"
+version = "1.0.0"

@@ -1,0 +1,24 @@
+@define-color cc-bg rgba(31, 31, 40, 0.95);
+@define-color noti-bg #2a2a37;
+@define-color noti-border #54546d;
+@define-color border-hover #777796;
+@define-color text-color #dcd7ba;
+@define-color text-muted #727169;
+@define-color accent #7e9cd8;
+@define-color accent-hover #b8c9e9;
+
+.notification {
+    background: @noti-bg;
+    border: 1px solid @noti-border;
+    border-radius: 14px;
+    color: @text-color;
+    padding: 10px;
+    margin: 5px;
+}
+
+.control-center {
+    background: @cc-bg;
+    border: 1px solid @noti-border;
+    border-radius: 14px;
+    color: @text-color;
+}

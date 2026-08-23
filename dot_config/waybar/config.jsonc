@@ -1,0 +1,40 @@
+{
+    // ─────────────────────────────────────────────
+    // Configuração Principal da Waybar (Hyprland)
+    // ─────────────────────────────────────────────
+
+    "layer": "top",
+    "position": "top",
+
+    "height": 40,
+    "spacing": 0,
+
+    "margin-top": 8,
+    "margin-left": 12,
+    "margin-right": 12,
+
+    // Módulos inclusos de forma modular
+    "include": [
+        "./modules/hyprland.jsonc",
+        "./modules/system.jsonc",
+        "./modules/media.jsonc"
+    ],
+
+    // Módulos organizados por ilhas
+    "modules-left": [
+        "hyprland/workspaces"
+    ],
+
+    "modules-center": [
+        "clock"
+    ],
+
+    "modules-right": [
+        "hyprland/language",
+        "network",
+        "pulseaudio",
+        "custom/notification",
+        "battery",
+        "custom/power"
+    ]
+}

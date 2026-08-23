@@ -1,0 +1,127 @@
+{
+    // ─────────────────────────────────────────────
+    // Relógio (Padrão PT-BR)
+    // ─────────────────────────────────────────────
+    "clock": {
+        "format": "{:%H:%M}",
+        "tooltip-format": "<big>     {0:%A}</big>\n{0:%d de %B de %Y}",
+        "interval": 60,
+        "locale": "pt_BR.UTF-8"
+    },
+
+    // ─────────────────────────────────────────────
+    // Rede
+    // ─────────────────────────────────────────────
+    "network": {
+        "format-wifi": "󰖩",
+        "format-ethernet": "󰈀",
+        "format-disconnected": "󰖪",
+        "tooltip-format-wifi": "{essid}\nSinal: {signalStrength}%",
+        "tooltip-format-ethernet": "Ethernet\n{ifname}",
+        "tooltip-format-disconnected": "Sem conexão",
+        "on-click": "nm-connection-editor"
+    },
+
+    // ─────────────────────────────────────────────
+    // Áudio (PulseAudio / PipeWire)
+    // ─────────────────────────────────────────────
+    "pulseaudio": {
+        "format": "{icon}",
+        "format-muted": "󰝟",
+        "format-icons": {
+            "default": [
+                "󰕿",
+                "󰖀",
+                "󰖀",
+                "󰖀",
+                "󰖀",
+                "󰖀",
+                "󰖀",
+                "󰖀",
+                "󰕾",
+                "󰕾"
+            ]
+        },
+        "tooltip-format": "{desc}\nVolume: {volume}%",
+        "on-click": "GSK_RENDERER=cairo pavucontrol",
+        "on-click-right": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
+        "on-scroll-up": "pactl set-sink-volume @DEFAULT_SINK@ +5%",
+        "on-scroll-down": "pactl set-sink-volume @DEFAULT_SINK@ -5%"
+    },
+
+    // ─────────────────────────────────────────────
+    // System Tray
+    // ─────────────────────────────────────────────
+    //"tray": {
+    //    "icon-size": 14,
+    //    "spacing": 8
+    //},
+
+    // ─────────────────────────────────────────────
+    // Notificações (SwayNC)
+    // ─────────────────────────────────────────────
+    "custom/notification": {
+        "tooltip": false,
+        "format": "{icon}",
+        "format-icons": {
+            "notification": "󱅫",
+            "none": "󰂚",
+            "dnd-notification": "󰂛",
+            "dnd-none": "󰂛",
+            "inhibited-notification": "󰂚",
+            "inhibited-none": "󰂚",
+            "dnd-inhibited-notification": "󰂛",
+            "dnd-inhibited-none": "󰂛"
+        },
+        "return-type": "json",
+        "exec-if": "which swaync-client",
+        "exec": "swaync-client -swb",
+        "on-click": "swaync-client -t -sw",
+        "on-click-right": "swaync-client -d -sw",
+        "escape": true
+    },
+
+    // ─────────────────────────────────────────────
+    // Layout de Teclado (Hyprland)
+    // ─────────────────────────────────────────────
+    "hyprland/language": {
+        "format": "{short}",
+        "keyboard-name": "at-translated-set-2-keyboard"
+    },
+
+    // ─────────────────────────────────────────────
+    // Bateria
+    // ─────────────────────────────────────────────
+    "battery": {
+        "states": {
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "{icon}",
+        "format-charging": "󰂄",
+        "format-icons": [
+            "󰁺",
+            "󰁻",
+            "󰁼",
+            "󰁽",
+            "󰁾",
+            "󰁿",
+            "󰂀",
+            "󰂁",
+            "󰂂",
+            "󰁹"
+        ],
+        "tooltip-format": "Bateria: {capacity}%\n{time}",
+        "interval": 60
+    },
+
+
+    // ─────────────────────────────────────────────
+    // Botão de Desligar (wlogout)
+    // ─────────────────────────────────────────────
+    "custom/power": {
+        "format": "",
+        "tooltip": false,
+        "on-click": "wlogout"
+    }
+}

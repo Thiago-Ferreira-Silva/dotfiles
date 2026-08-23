@@ -1,0 +1,12 @@
+[paths]
+themes_dir = "themes"
+templates_dir = "templates"
+cache_dir = "cache"
+
+[wallpaper]
+daemon = "awww" # awww, swww, hyprpaper, etc.
+
+[reloads]
+hyprland = "hyprctl reload"
+waybar = "pkill -USR2 waybar"
+swaync = "swaync-client -R && swaync-client -rs"

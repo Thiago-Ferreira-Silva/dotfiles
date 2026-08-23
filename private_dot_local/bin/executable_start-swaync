@@ -1,0 +1,7 @@
+#!/bin/sh
+
+export GDK_BACKEND=wayland
+export GSK_RENDERER=cairo
+
+exec /usr/bin/swaync
+
