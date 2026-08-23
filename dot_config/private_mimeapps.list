@@ -1,0 +1,14 @@
+[Added Associations]
+application/json=nvim.desktop;firefox.desktop;
+image/jpeg=com.interversehq.qView.desktop;firefox.desktop;swappy.desktop;chromium.desktop;
+image/png=qview.desktop;com.interversehq.qView.desktop;firefox.desktop;
+video/mp4=mpv-2.desktop;
+
+[Default Applications]
+application/json=nvim.desktop;
+image/jpeg=com.interversehq.qView.desktop;
+image/png=qview.desktop;
+video/mp4=mpv-2.desktop;
+
+[Removed Associations]
+application/json=nvim-3.desktop;nvim-2.desktop;

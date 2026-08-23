@@ -1,0 +1,6 @@
+.config/theme-engine/venv
+.config/theme-engine/cache
+.config/theme-engine/cache_test
+.config/theme-engine/__pycache__
+**/*.bak
+**/*~
