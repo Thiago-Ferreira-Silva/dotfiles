@@ -2,5 +2,8 @@
 .config/theme-engine/cache
 .config/theme-engine/cache_test
 .config/theme-engine/__pycache__
+.config/nvim/**/.git
+.config/nvim/**/.git/**
 **/*.bak
 **/*~
+
