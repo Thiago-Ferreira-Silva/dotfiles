@@ -1,345 +1,314 @@
-# kickstart.nvim
+# 🚀 Manual do Neovim (Kickstart Configuration)
 
-## Introduction
+Bem-vindo ao manual completo de utilização e configuração do Neovim. Esta configuração é uma versão moderna, modularizada e performática do **Kickstart.nvim**, desenvolvida em Lua e utilizando o gerenciador de pacotes nativo do Neovim (`vim.pack`).
 
-A starting point for Neovim that is:
+---
 
-* Small
-* Single-file
-* Completely Documented
+## 📋 Sumário
+1. [Descrição da Configuração](#1-descrição-da-configuração)
+2. [Requisitos do Sistema](#2-requisitos-do-sistema)
+3. [Instalação](#3-instalação)
+4. [Descrição de Todos os Plugins Utilizados](#4-descrição-de-todos-os-plugins-utilizados)
+5. [Comandos Básicos do Neovim e dos Plugins](#5-comandos-básicos-do-neovim-e-dos-plugins)
+6. [Listagem Completa de Atalhos (Keymaps)](#6-listagem-completa-de-atalhos-keymaps)
 
-**NOT** a Neovim distribution, but instead a starting point for your configuration.
+---
 
-## Installation
+## 1. Descrição da Configuração
 
-### Install Neovim
-
-Kickstart.nvim targets *only* the latest
-['stable'](https://github.com/neovim/neovim/releases/tag/stable) and latest
-['nightly'](https://github.com/neovim/neovim/releases/tag/nightly) of Neovim.
-If you are experiencing issues, please make sure you have at least the latest
-stable version. Most likely, you want to install neovim via a [package
-manager](https://github.com/neovim/neovim/blob/master/INSTALL.md#install-from-package).
-To check your neovim version, run `nvim --version` and make sure it is not
-below the latest
-['stable'](https://github.com/neovim/neovim/releases/tag/stable) version. If
-your chosen install method only gives you an outdated version of neovim, find
-alternative [installation methods below](#alternative-neovim-installation-methods).
-
-### Install External Dependencies
-
-External Requirements:
-- Basic utils: `git`, `make`, `unzip`, C Compiler (`gcc`)
-- [ripgrep](https://github.com/BurntSushi/ripgrep#installation),
-  [fd-find](https://github.com/sharkdp/fd#installation)
-- [tree-sitter CLI](https://github.com/tree-sitter/tree-sitter/blob/master/crates/cli/README.md#installation)
-- Clipboard tool (xclip/xsel/win32yank or other depending on the platform)
-- A [Nerd Font](https://www.nerdfonts.com/): optional, provides various icons
-  - if you have it set `vim.g.have_nerd_font` in `init.lua` to true
-- Emoji fonts (Ubuntu only, and only if you want emoji!) `sudo apt install fonts-noto-color-emoji`
-- Language Setup:
-  - If you want to write Typescript, you need `npm`
-  - If you want to write Golang, you will need `go`
-  - etc.
-
-> [!NOTE]
-> See [Install Recipes](#Install-Recipes) for additional Windows and Linux specific notes
-> and quick install snippets
-
-### Install Kickstart
-
-> [!NOTE]
-> [Backup](#FAQ) your previous configuration (if any exists)
-
-Neovim's configurations are located under the following paths, depending on your OS:
-
-| OS | PATH |
-| :- | :--- |
-| Linux, MacOS | `$XDG_CONFIG_HOME/nvim`, `~/.config/nvim` |
-| Windows (cmd)| `%localappdata%\nvim\` |
-| Windows (powershell)| `$env:LOCALAPPDATA\nvim\` |
-
-#### Recommended Step
-
-[Fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo) this repo
-so that you have your own copy that you can modify, then install by cloning the
-fork to your machine using one of the commands below, depending on your OS.
-
-> [!NOTE]
-> Your fork's URL will be something like this:
-> `https://github.com/<your_github_username>/kickstart.nvim.git`
-
-You likely want to remove `nvim-pack-lock.json` from your fork's `.gitignore`
-file too - it's ignored in the kickstart repo to make maintenance easier, but
-it's recommended to track it in version control (see `:help vim.pack-lockfile`).
-
-#### Clone kickstart.nvim
-
-> [!NOTE]
-> If following the recommended step above (i.e., forking the repo), replace
-> `nvim-lua` with `<your_github_username>` in the commands below
-
-<details><summary> Linux and Mac </summary>
-
-```sh
-git clone https://github.com/nvim-lua/kickstart.nvim.git "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
-```
-
-</details>
-
-<details><summary> Windows </summary>
-
-If you're using `cmd.exe`:
+A configuração segue uma arquitetura modularizada para facilitar a manutenção, legibilidade e personalização:
 
 ```
-git clone https://github.com/nvim-lua/kickstart.nvim.git "%localappdata%\nvim"
+~/.config/nvim/
+├── init.lua                   # Ponto de entrada principal
+├── nvim-pack-lock.json        # Trava de versões dos plugins
+├── lua/
+│   ├── config/                # Configurações do núcleo do Neovim
+│   │   ├── options.lua        # Opções nativas (linhas, recuo, clipboard, etc.)
+│   │   ├── keymaps.lua        # Mapeamentos de teclas básicos e janelas
+│   │   ├── autocmds.lua       # Autocomandos e hooks de compilação do vim.pack
+│   │   └── health.lua         # Verificações de integridade
+│   └── plugins/               # Módulos e especificações dos plugins
+│       ├── ui.lua             # Temas, statusline, ícones, which-key, mini.*
+│       ├── telescope.lua      # Busca fuzzy, navegação de arquivos e buffers
+│       ├── lsp.lua            # Servidores LSP, Mason e fidget
+│       ├── conform.lua        # Formatação de código assíncrona
+│       ├── completion.lua     # Autocompletar (blink.cmp) e Snippets (LuaSnip)
+│       ├── treesitter.lua     # Parser sintático e destaques de código
+│       ├── debug.lua          # Depuração (DAP, DAP UI)
+│       ├── neo-tree.lua       # Navegador de arquivos em árvore
+│       ├── gitsigns.lua       # Integração com Git
+│       ├── indent_line.lua    # Linhas de guia de indentação
+│       ├── lint.lua           # Linters de código
+│       └── autopairs.lua      # Fechamento automático de pares
 ```
 
-If you're using `powershell.exe`
+### Principais recursos inclusos:
+- **Gerenciador de Plugins Nativo (`vim.pack`)**: Gerenciamento direto sem dependência de gerenciadores externos como `lazy.nvim` ou `packer.nvim`.
+- **Suporte LSP Avançado**: Configurado com `nvim-lspconfig`, `mason.nvim` e instalações automáticas de LSPs.
+- **Autocompletar Ultrarrápido**: Alimentado por `blink.cmp` e `LuaSnip` com trechos prontos do `friendly-snippets`.
+- **Análise Sintática Inteligente**: Com `nvim-treesitter` para destaque colorido e dobras precisas.
+- **Formatação e Linting**: Suporte a autoformatação com `conform.nvim` e diagnóstico com `nvim-lint`.
+- **Ambiente de Depuração (DAP)**: Configuração de depurador pronta para uso (suporte nativo a Go e extensível a outras linguagens).
 
+---
+
+## 2. Requisitos do Sistema
+
+Para obter o funcionamento ideal de todas as funcionalidades e plugins, certifique-se de possuir instalado em seu ambiente:
+
+| Requisito | Versão Recomendada | Finalidade |
+| :--- | :--- | :--- |
+| **Neovim** | `>= 0.10.0` (Recomendado `0.12+`) | Suporte ao `vim.pack` e APIs Lua modernas |
+| **Git** | Qualquer versão recente | Clonagem e atualização automática de plugins |
+| **Compilador C / `make`** | `gcc`, `clang` ou `make` | Compilação do `telescope-fzf-native` e `jsregexp` |
+| **Ripgrep** | `rg` | Execução ultra-rápida do `live_grep` no Telescope |
+| **fd** | `fd` | Busca otimizada de arquivos no sistema |
+| **Nerd Font** | Qualquer uma (ex: JetBrainsMono, FiraCode) | Exibição correta de ícones no editor e na statusline |
+| **Node.js & npm** | `>= 18.x` (Opcional) | Suporte a LSPs baseados em Node (TypeScript, Pyright, HTML, CSS, etc.) |
+| **Python 3** | `>= 3.9` (Opcional) | Suporte a linters e formatadores em Python (`black`, `isort`) |
+
+---
+
+## 3. Instalação
+
+Siga os passos abaixo para instalar e executar esta configuração:
+
+### 1. Fazer Backup da Configuração Atual (Se houver)
+```bash
+mv ~/.config/nvim ~/.config/nvim.backup
+mv ~/.local/share/nvim ~/.local/share/nvim.backup
 ```
-git clone https://github.com/nvim-lua/kickstart.nvim.git "${env:LOCALAPPDATA}\nvim"
+
+### 2. Clonar o Repositório
+```bash
+git clone <URL_DO_SEU_REPOSITORIO> ~/.config/nvim
 ```
 
-</details>
-
-### Post Installation
-
-Start Neovim
-
-```sh
+### 3. Abrir o Neovim
+```bash
 nvim
 ```
+Ao iniciar pela primeira vez, o Neovim baixará automaticamente os plugins configurados via `vim.pack` e executará as etapas de compilação pós-instalação (como a compilação do FZF native).
 
-That's it! `vim.pack` will install all the plugins from your config. Use
-`:lua vim.pack.update(nil, { offline = true })` to inspect plugin state and
-`:lua vim.pack.update()` to fetch updates (`:write` applies updates, `:quit`
-cancels them).
-
-#### Read The Friendly Documentation
-
-Read through the `init.lua` file in your configuration folder for more
-information about extending and exploring Neovim. That also includes
-examples of adding popularly requested plugins.
-
-> [!NOTE]
-> For more information about a particular plugin check its repository's documentation.
-
-
-### Getting Started
-
-[The Only Video You Need to Get Started with Neovim](https://youtu.be/m8C0Cq9Uv9o)
-
-### FAQ
-
-* What should I do if I already have a pre-existing Neovim configuration?
-  * You should back it up and then delete all associated files.
-  * This includes your existing init.lua and the Neovim files in `~/.local`
-    which can be deleted with `rm -rf ~/.local/share/nvim/`
-* Can I keep my existing configuration in parallel to kickstart?
-  * Yes! You can use [NVIM_APPNAME](https://neovim.io/doc/user/starting.html#%24NVIM_APPNAME)`=nvim-NAME`
-    to maintain multiple configurations. For example, you can install the kickstart
-    configuration in `~/.config/nvim-kickstart` and create an alias:
-    ```
-    alias nvim-kickstart='NVIM_APPNAME="nvim-kickstart" nvim'
-    ```
-    When you run Neovim using `nvim-kickstart` alias it will use the alternative
-    config directory and the matching local directory
-    `~/.local/share/nvim-kickstart`. You can apply this approach to any Neovim
-    distribution that you would like to try out.
-* What if I want to "uninstall" this configuration:
-  * Remove your config directory and local data directory (for example,
-    `~/.config/nvim` and `~/.local/share/nvim`).
-* Why is the kickstart `init.lua` a single file? Wouldn't it make sense to split it into multiple files?
-  * The main purpose of kickstart is to serve as a teaching tool and a reference
-    configuration that someone can easily use to `git clone` as a basis for their own.
-    As you progress in learning Neovim and Lua, you might consider splitting `init.lua`
-    into smaller parts. A fork of kickstart that does this while maintaining the
-    same functionality is available here:
-    * [kickstart-modular.nvim](https://github.com/dam9000/kickstart-modular.nvim)
-  * Discussions on this topic can be found here:
-    * [Restructure the configuration](https://github.com/nvim-lua/kickstart.nvim/issues/218)
-    * [Reorganize init.lua into a multi-file setup](https://github.com/nvim-lua/kickstart.nvim/pull/473)
-
-### Install Recipes
-
-Below you can find OS specific install instructions for Neovim and dependencies.
-
-After installing all the dependencies continue with the [Install Kickstart](#install-kickstart) step.
-
-#### Windows Installation
-
-<details><summary>Windows with Microsoft C++ Build Tools and CMake</summary>
-Kickstart's default config is make-only for `telescope-fzf-native.nvim`.
-If `make` is unavailable, the plugin is skipped.
-
-Recommended: install `make` (see the chocolatey section below).
-
-If you want a CMake-only setup, customize `init.lua` in two places:
-
-1. Include `telescope-fzf-native.nvim` when `cmake` is available:
-
-```lua
-if vim.fn.executable 'make' == 1 or vim.fn.executable 'cmake' == 1 then
-  table.insert(plugins, gh 'nvim-telescope/telescope-fzf-native.nvim')
-end
+### 4. Verificar a Integridade
+Dentro do Neovim, execute o comando de diagnóstico para garantir que todas as ferramentas estão funcionais:
+```vim
+:checkhealth
 ```
 
-2. In the `PackChanged` hook, use CMake when `make` is unavailable:
+---
 
-```lua
-if name == 'telescope-fzf-native.nvim' then
-  if vim.fn.executable 'make' == 1 then
-    run_build(name, { 'make' }, ev.data.path)
-  elseif vim.fn.executable 'cmake' == 1 then
-    run_build(name, { 'cmake', '-S.', '-Bbuild', '-DCMAKE_BUILD_TYPE=Release' }, ev.data.path)
-    run_build(name, { 'cmake', '--build', 'build', '--config', 'Release', '--target', 'install' }, ev.data.path)
-  end
-  return
-end
-```
+## 4. Descrição de Todos os Plugins Utilizados
 
-See `telescope-fzf-native` documentation for [build details](https://github.com/nvim-telescope/telescope-fzf-native.nvim#installation).
-</details>
-<details><summary>Windows with gcc/make using chocolatey</summary>
-Alternatively, one can install gcc and make which don't require changing the config,
-the easiest way is to use choco:
+### 🎨 Interface, Tema e UX
+- **`folke/tokyonight.nvim`**: Tema visual moderno. O esquema ativado por padrão é o `tokyonight-night`.
+- **`folke/which-key.nvim`**: Exibe uma janela pop-up interativa mostrando os atalhos disponíveis ao pressionar teclas líderes (`<leader>`).
+- **`folke/todo-comments.nvim`**: Destaca palavras-chave em comentários como `TODO`, `FIX`, `NOTE`, `WARN`, `HACK`.
+- **`nvim-mini/mini.nvim`**: Coleção modular de utilitários leves:
+  - `mini.icons`: Gerenciador de ícones para componentes da interface.
+  - `mini.ai`: Objetos de texto aprimorados para seleção/edição (`a`/`i`) ao redor ou dentro de parênteses, aspas, etc.
+  - `mini.surround`: Adiciona, deleta ou substitui elementos envolventes (aspas, colchetes, parênteses).
+  - `mini.statusline`: Barra de status limpa e leve na parte inferior da tela.
+- **`NMAC427/guess-indent.nvim`**: Detecta e ajusta automaticamente a indentação do arquivo aberto (tabs vs. espaços e tamanho).
+- **`lukas-reineke/indent-blankline.nvim`**: Desenha guias visuais verticais de indentação no código, incluindo linhas em branco.
 
-1. install [chocolatey](https://chocolatey.org/install)
-either follow the instructions on the page or use winget,
-run in cmd as **admin**:
-```
-winget install --accept-source-agreements chocolatey.chocolatey
-```
+### 🔍 Busca e Navegação
+- **`nvim-telescope/telescope.nvim`**: Mecanismo principal de busca fuzzy para arquivos, textos, símbolos LSP, comandos e ajuda.
+- **`nvim-lua/plenary.nvim`**: Biblioteca de funções em Lua requerida por múltiplos plugins (Telescope, Neo-tree, Gitsigns).
+- **`nvim-telescope/telescope-ui-select.nvim`**: Converte os menus de seleção do Neovim para a interface do Telescope.
+- **`nvim-telescope/telescope-fzf-native.nvim`**: Extensão escrita em C para aceleração da busca fuzzy no Telescope.
+- **`nvim-neo-tree/neo-tree.nvim`** *(com `MunifTanjim/nui.nvim`)*: Árvore lateral de arquivos para navegação e manipulação do diretório.
 
-2. install all requirements using choco, exit the previous cmd and
-open a new one so that choco path is set, and run in cmd as **admin**:
-```
-choco install -y neovim git ripgrep wget fd unzip gzip mingw make tree-sitter
-```
-</details>
-<details><summary>WSL (Windows Subsystem for Linux)</summary>
+### 🌳 Sintaxe e Parsing
+- **`nvim-treesitter/nvim-treesitter`**: Gerador de árvore sintática (AST) que proporciona realce de sintaxe avançado, indentação precisa e suporte a dobras de código.
 
-```
-wsl --install
-wsl
-sudo add-apt-repository ppa:neovim-ppa/unstable -y
-sudo apt update
-sudo apt install make gcc ripgrep fd-find tree-sitter-cli unzip git xclip neovim
-```
-</details>
+### 🧠 LSP & Gerenciamento de Ferramentas
+- **`neovim/nvim-lspconfig`**: Configurações padrão para servidores de linguagem (LSP).
+- **`mason-org/mason.nvim`**: Gerenciador de pacotes dentro do Neovim para instalar LSPs, formatadores e linters.
+- **`mason-org/mason-lspconfig.nvim`**: Conecta o Mason ao `nvim-lspconfig`.
+- **`WhoIsSethDaniel/mason-tool-installer.nvim`**: Garante a instalação automática dos servidores configurados (`gopls`, `pyright`, `stylua`, `bash-language-server`, `typescript-language-server`, etc.).
+- **`j-hui/fidget.nvim`**: Notificações discretas com o progresso das operações do LSP no canto inferior da tela.
 
-#### Linux Install
-<details><summary>Ubuntu Install Steps</summary>
+### ⚡ Autocompletar e Snippets
+- **`saghen/blink.cmp`**: Engine de autocompletar rápida com suporte a LSP, caminhos e snippets.
+- **`L3MON4D3/LuaSnip`**: Mecanismo de expansão e manipulação de trechos de código (snippets).
+- **`rafamadriz/friendly-snippets`**: Biblioteca com centenas de snippets pré-definidos para diversas linguagens.
 
-```
-sudo add-apt-repository ppa:neovim-ppa/unstable -y
-sudo apt update
-sudo apt install make gcc ripgrep fd-find tree-sitter-cli unzip git xclip neovim
-```
-</details>
-<details><summary>Debian Install Steps</summary>
+### 🛠️ Formatação e Linting
+- **`stevearc/conform.nvim`**: Formatador de código com suporte a execução assíncrona ao salvar e integração com ferramentas como `stylua`, `black`, `isort` ou LSP fallback.
+- **`mfussenegger/nvim-lint`**: Executa linters assincronamente (ex: `markdownlint`).
 
-```
-sudo apt update
-sudo apt install make gcc ripgrep fd-find tree-sitter-cli unzip git xclip curl
+### 🐙 Integração com Git
+- **`lewis6991/gitsigns.nvim`**: Exibe sinais visuais no gutter para linhas modificadas/adicionadas/removidas, além de permitir navegação por hunks, staging, reset e blame.
 
-# Now we install nvim
-curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz
-sudo rm -rf /opt/nvim-linux-x86_64
-sudo mkdir -p /opt/nvim-linux-x86_64
-sudo chmod a+rX /opt/nvim-linux-x86_64
-sudo tar -C /opt -xzf nvim-linux-x86_64.tar.gz
+### ✍️ Edição
+- **`windwp/nvim-autopairs`**: Fecha automaticamente parênteses, colchetes, chaves e aspas ao digitar.
 
-# make it available in /usr/local/bin, distro installs to /usr/bin
-sudo ln -sf /opt/nvim-linux-x86_64/bin/nvim /usr/local/bin/
-```
-</details>
-<details><summary>Fedora Install Steps</summary>
+### 🐛 Depuração (DAP)
+- **`mfussenegger/nvim-dap`**: Cliente do protocolo de depuração (Debug Adapter Protocol).
+- **`rcarriga/nvim-dap-ui`** & **`nvim-neotest/nvim-nio`**: Interface visual gráfica para inspeção de variáveis, pilha de chamadas e pontos de interrupção.
+- **`jay-babu/mason-nvim-dap.nvim`**: Conecta o Mason para gerenciamento automático de depuradores.
+- **`leoluz/nvim-dap-go`**: Configurações e facilidades de depuração para código em linguagem Go via Delve.
 
-```
-sudo dnf install -y gcc make git ripgrep fd-find tree-sitter-cli unzip neovim
-```
-</details>
+---
 
-<details><summary>Arch Install Steps</summary>
+## 5. Comandos Básicos do Neovim e dos Plugins
 
-```
-sudo pacman -S --noconfirm --needed gcc make git ripgrep fd tree-sitter-cli unzip neovim
-```
-</details>
+### 📄 Comandos Gerais do Neovim
+- `:w` — Salva as alterações do arquivo atual.
+- `:q` — Fecha o buffer/janela atual.
+- `:qa` — Fecha todas as janelas do Neovim.
+- `:vsplit` ou `:split` — Divide a janela verticalmente ou horizontalmente.
+- `:checkhealth` — Executa uma verificação completa de saúde da configuração e dependências.
+- `:Tutor` — Inicia o tutorial nativo do Neovim para aprendizado de movimentações e edições básicas.
 
-### Alternative neovim installation methods
+### 📦 Comandos do Gerenciador de Plugins (`vim.pack`)
+- `:lua vim.pack.update()` — Baixa e atualiza todos os plugins listados.
+- `:lua vim.pack.update(nil, { offline = true })` — Inspeciona o estado atual dos plugins instalados sem realizar downloads.
 
-For some systems it is not unexpected that the [package manager installation
-method](https://github.com/neovim/neovim/blob/master/INSTALL.md#install-from-package)
-recommended by neovim is significantly behind. If that is the case for you,
-pick one of the following methods that are known to deliver fresh neovim versions very quickly.
-They have been picked for their popularity and because they make installing and updating
-neovim to the latest versions easy. You can also find more detail about the
-available methods being discussed
-[here](https://github.com/nvim-lua/kickstart.nvim/issues/1583).
+### 🧩 Comandos Úteis dos Plugins
+- **Mason**:
+  - `:Mason` — Abre o painel do Mason para gerenciar e instalar servidores LSP, linters e formatadores.
+- **Treesitter**:
+  - `:TSUpdate` — Atualiza os parsers de sintaxe do Treesitter.
+- **Neo-tree**:
+  - `:Neotree reveal` — Abre a árvore de arquivos e foca no arquivo atual.
+  - `:Neotree close` — Fecha a janela do Neo-tree.
+- **Telescope**:
+  - `:Telescope <picker>` — Executa um buscador específico (ex: `:Telescope find_files`, `:Telescope live_grep`, `:Telescope colorscheme`).
 
+---
 
-<details><summary>Bob</summary>
+## 6. Listagem Completa de Atalhos (Keymaps)
 
-[Bob](https://github.com/MordechaiHadad/bob) is a Neovim version manager for
-all platforms. Simply install
-[rustup](https://rust-lang.github.io/rustup/installation/other.html),
-and run the following commands:
+> **Nota:** A tecla **Leader** desta configuração está definida como o `<Espaço>` (`<Space>`).
 
-```bash
-rustup default stable
-rustup update stable
-cargo install bob-nvim
-bob use stable
-```
+### 🖥️ Navegação e Ações Gerais
+| Modo | Atalho | Ação / Descrição |
+| :---: | :--- | :--- |
+| **N** | `<Esc>` | Limpa o destaque das buscas ativas (`nohlsearch`) |
+| **T** | `<Esc><Esc>` | Sai do modo terminal embutido (`<C-\><C-n>`) |
+| **N** | `<C-h>` | Mover o foco para a janela da **esquerda** |
+| **N** | `<C-l>` | Mover o foco para a janela da **direita** |
+| **N** | `<C-j>` | Mover o foco para a janela **abaixo** |
+| **N** | `<C-k>` | Mover o foco para a janela **acima** |
+| **N** | `<leader>q` | Abrir a lista Quickfix de diagnósticos (`loclist`) |
+| **N** | `\` | Revelar o arquivo atual na árvore do Neo-tree |
 
-</details>
+---
 
-<details><summary>Homebrew</summary>
+### 🔍 Busca e Navegação (Telescope)
+| Modo | Atalho | Ação / Descrição |
+| :---: | :--- | :--- |
+| **N** | `<leader>sf` | **[S]earch [F]iles**: Buscar arquivos no projeto |
+| **N** | `<leader>sg` | **[S]earch by [G]rep**: Buscar texto em todo o projeto via Grep |
+| **N, V** | `<leader>sw` | **[S]earch current [W]ord**: Buscar a palavra sob o cursor |
+| **N** | `<leader><space>` | Buscar e alternar entre **buffers abertos** |
+| **N** | `<leader>/` | Busca Fuzzy dentro do **buffer atual** |
+| **N** | `<leader>s/` | **[S]earch [/]**: Live Grep pesquisando apenas nos arquivos abertos |
+| **N** | `<leader>sd` | **[S]earch [D]iagnostics**: Listar mensagens de erros/avisos |
+| **N** | `<leader>sh` | **[S]earch [H]elp**: Buscar na documentação de ajuda do Neovim |
+| **N** | `<leader>sk` | **[S]earch [K]eymaps**: Buscar atalhos de teclado cadastrados |
+| **N** | `<leader>ss` | **[S]earch [S]elect**: Listar todos os pickers disponíveis no Telescope |
+| **N** | `<leader>sr` | **[S]earch [R]esume**: Retomar a janela da última busca feita no Telescope |
+| **N** | `<leader>s.` | **[S]earch Recent Files**: Buscar em arquivos abertos recentemente |
+| **N** | `<leader>sc` | **[S]earch [C]ommands**: Buscar comandos do Neovim |
+| **N** | `<leader>sn` | **[S]earch [N]eovim files**: Buscar arquivos da configuração do Neovim |
 
-[Homebrew](https://brew.sh) is a package manager popular on Mac and Linux.
-Simply install using [`brew install`](https://formulae.brew.sh/formula/neovim).
+---
 
-</details>
+### 🧠 Linguagem e Inteligência de Código (LSP)
+*(Ativados automaticamente quando um servidor LSP conecta ao arquivo)*
 
-<details><summary>Flatpak</summary>
+| Modo | Atalho | Ação / Descrição |
+| :---: | :--- | :--- |
+| **N** | `K` | Exibir documentação / informações do tipo sob o cursor (**Hover**) |
+| **N** | `gd` | **[G]oto [D]efinition**: Ir para a definição do símbolo |
+| **N** | `gD` | **[G]oto [D]eclaration**: Ir para a declaração |
+| **N** | `gr` | **[G]oto [R]eferences**: Listar referências do símbolo |
+| **N** | `gi` | **[G]oto [I]mplementation**: Ir para a implementação |
+| **N** | `grt` | **[G]oto [T]ype Definition**: Ir para a definição do tipo |
+| **N** | `gO` | Exibir estrutura de símbolos do documento atual (**Document Symbols**) |
+| **N** | `gW` | Exibir símbolos de todo o projeto (**Workspace Symbols**) |
+| **N** | `<leader>rn` | **[R]e[n]ame**: Renomear o símbolo sob o cursor em todo o projeto |
+| **N, X** | `<leader>ca` | **[C]ode [A]ction**: Executar Ação de Código sugerida pelo LSP |
+| **N** | `<leader>th` | **[T]oggle Inlay [H]ints**: Alternar exibição de dicas embutidas no código |
 
-Flatpak is a package manager for applications that allows developers to package their applications
-just once to make it available on all Linux systems. Simply [install flatpak](https://flatpak.org/setup/)
-and setup [flathub](https://flathub.org/setup) to [install neovim](https://flathub.org/apps/io.neovim.nvim).
+---
 
-</details>
+### 🎨 Formatação de Código
+| Modo | Atalho | Ação / Descrição |
+| :---: | :--- | :--- |
+| **N, V** | `<leader>f` | **[F]ormat**: Formatar o arquivo ou trecho selecionado via Conform |
 
-<details><summary>asdf and mise-en-place</summary>
+---
 
-[asdf](https://asdf-vm.com/) and [mise](https://mise.jdx.dev/) are tool version managers,
-mostly aimed towards project-specific tool versioning. However both support managing tools
-globally in the user-space as well:
+### 🐙 Integração com Git (Gitsigns)
+| Modo | Atalho | Ação / Descrição |
+| :---: | :--- | :--- |
+| **N** | `]c` | Ir para a **próxima** alteração de Git (Next Hunk) |
+| **N** | `[c` | Ir para a alteração de Git **anterior** (Previous Hunk) |
+| **N, V** | `<leader>hs` | Git **[s]tage hunk**: Adicionar o hunk selecionado/atual ao staging |
+| **N, V** | `<leader>hr` | Git **[r]eset hunk**: Reverter as alterações do hunk |
+| **N** | `<leader>hS` | Git **[S]tage buffer**: Adicionar todas as alterações do buffer ao staging |
+| **N** | `<leader>hR` | Git **[R]eset buffer**: Reverter todas as alterações do buffer |
+| **N** | `<leader>hp` | Git **[p]review hunk**: Abrir janela flutuante com a prévia da alteração |
+| **N** | `<leader>hi` | Git preview hunk **[i]nline**: Exibir prévia da alteração na própria linha |
+| **N** | `<leader>hb` | Git **[b]lame line**: Exibir detalhes do commit e autor da linha atual |
+| **N** | `<leader>hd` | Git **[d]iff index**: Exibir diff comparando com o índice do Git |
+| **N** | `<leader>hD` | Git **[D]iff commit**: Exibir diff comparando com o último commit (`@`) |
+| **N** | `<leader>hq` | Git hunk **[q]uickfix**: Abrir lista quickfix com alterações do arquivo atual |
+| **N** | `<leader>hQ` | Git hunk **[Q]uickfix**: Abrir lista quickfix com alterações de todo o repositório |
+| **N** | `<leader>tb` | **[T]oggle [b]lame**: Alternar exibição permanente de blame no final da linha |
+| **N** | `<leader>tw` | **[T]oggle [w]ord diff**: Alternar destaque de diferenças palavra por palavra |
+| **O, X** | `ih` | Objeto de texto para selecionar o hunk do Git |
 
-<details><summary>mise</summary>
+---
 
-[Install mise](https://mise.jdx.dev/getting-started.html), then run:
+### 🐛 Depuração (DAP - Debug Adapter Protocol)
+| Modo | Atalho | Ação / Descrição |
+| :---: | :--- | :--- |
+| **N** | `<F5>` | Iniciar ou continuar execução da depuração |
+| **N** | `<F1>` | Entrar na função (**Step Into**) |
+| **N** | `<F2>` | Passar sobre a instrução (**Step Over**) |
+| **N** | `<F3>` | Sair da função (**Step Out**) |
+| **N** | `<F7>` | Alternar a exibição da interface do depurador (DAP UI) |
+| **N** | `<leader>b` | Alternar ponto de interrupção (**Toggle Breakpoint**) |
+| **N** | `<leader>B` | Definir ponto de interrupção **condicional** |
 
-```bash
-mise plugins install neovim
-mise use neovim@stable
-```
+---
 
-</details>
+### ⚡ Autocompletar e Snippets (Blink.cmp)
+*(Disponíveis durante o Modo de Inserção)*
 
-<details><summary>asdf</summary>
+| Atalho | Ação / Descrição |
+| :--- | :--- |
+| `<C-y>` | **Aceitar sugestão**: Insere a sugestão, executa auto-importação e expande o snippet |
+| `<Tab>` / `<S-Tab>` | **Navegar pelo snippet**: Mover para a direita/esquerda nos campos do snippet |
+| `<C-space>` | **Abrir menu**: Abre o menu de sugestões ou a documentação estendida |
+| `<C-n>` / `<Down>` | Selecionar a **próxima** sugestão |
+| `<C-p>` / `<Up>` | Selecionar a sugestão **anterior** |
+| `<C-e>` | **Ocultar** o menu de autocompletar |
+| `<C-k>` | Alternar exibição da caixa de **ajuda de assinatura** da função |
 
-[Install asdf](https://asdf-vm.com/guide/getting-started.html), then run:
+---
 
-```bash
-asdf plugin add neovim
-asdf install neovim stable
-asdf set neovim stable --home
-asdf reshim neovim
-```
+### ✏️ Edição, Manipulação de Texto e Envolvimento (mini.ai & mini.surround)
 
-</details>
+#### Objetos de Texto Avançados (`mini.ai`)
+| Atalho | Exemplo | Descrição |
+| :--- | :--- | :--- |
+| `va)` | Modo Visual | Seleciona visualmente ao redor do parênteses |
+| `ciiq` | Modo Normal | Altera o conteúdo dentro das próximas aspas (`next quote`) |
 
-</details>
+#### Caracteres Envolventes (`mini.surround`)
+| Comando | Ação | Exemplo |
+| :--- | :--- | :--- |
+| `saiw)` | **Adicionar** envolvimento | Adiciona parênteses ao redor da palavra atual |
+| `sd'` | **Deletar** envolvimento | Remove as aspas simples que envolvem o trecho |
+| `sr)'` | **Substituir** envolvimento | Substitui parênteses envolventes por aspas simples |
+
+---
+
+*Manual gerado para a configuração do Neovim baseada em Kickstart.nvim.*

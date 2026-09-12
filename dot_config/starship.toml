@@ -42,7 +42,7 @@ Arch = "󰣇"
 show_always = true
 style_user = "bold"
 style_root = "bold red"
-format = "[$user]($style)"
+format = "[$user ]($style)"
 
 # ─────────────────────────────────────────────
 # HOST
@@ -65,12 +65,12 @@ truncate_to_repo = true
 read_only = " 󰌾"
 
 [directory.substitutions]
-"~" = " 󰋜"
-"Documents" = " 󰈙"
-"Downloads" = " 󰇚"
-"Pictures" = " 󰉏"
-"Projects" = " 󰲋"
-"Desktop" = " 󰇄"
+"~" = "󰋜 "
+"Documents" = "󰈙 "
+"Downloads" = "󰇚 "
+"Pictures" = "󰉏 "
+"Projects" = "󰲋 "
+"Desktop" = "󰇄 "
 
 # ─────────────────────────────────────────────
 # GIT
