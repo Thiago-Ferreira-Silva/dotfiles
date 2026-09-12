@@ -14,7 +14,7 @@ if ! command -v chezmoi >/dev/null 2>&1; then
 fi
 
 # Diretório do repositório de dotfiles (ou usa o repositório remoto)
-REPO_URL="https://github.com/seu-usuario/dotfiles.git" # Ajustar conforme necessário
+REPO_URL="https://github.com/Thiago-Ferreira-Silva/dotfiles.git"
 
 if [ -d "$HOME/.local/share/chezmoi" ]; then
     echo "Repositório chezmoi já existe localmente."
