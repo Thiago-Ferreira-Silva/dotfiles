@@ -1,0 +1,7 @@
+{{- $email := promptString "email" "your.email@example.com" -}}
+{{- $name := promptString "name" "Your Name" -}}
+
+[data]
+    email = "{{ $email }}"
+    name = "{{ $name }}"
+    hostname = "{{ .chezmoi.hostname }}"

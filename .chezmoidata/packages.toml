@@ -1,0 +1,35 @@
+[packages]
+native = [
+    "hyprland",
+    "waybar",
+    "rofi",
+    "foot",
+    "swaync",
+    "zsh",
+    "starship",
+    "neovim",
+    "git",
+    "python",
+    "python-pip",
+    "python-jinja2",
+    "python-toml",
+    "htop",
+    "dolphin",
+    "kdeglobals",
+    "zsh-autosuggestions",
+    "zsh-syntax-highlighting",
+    "ripgrep",
+    "fd",
+    "fzf",
+    "otf-font-awesome",
+    "ttf-jetbrains-mono-nerd"
+]
+
+aur = [
+    "hyprlock",
+    "hypridle",
+    "hyprpaper",
+    "wlogout"
+]
+
+flatpak = []

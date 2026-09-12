@@ -1,0 +1,38 @@
+#!/bin/bash
+
+set -e
+
+echo "=== Iniciando instalação de pacotes do sistema ==="
+
+if command -v pacman &> /dev/null; then
+    echo "Gerenciador pacman detectado. Instalando pacotes nativos..."
+    sudo pacman -S --needed --noconfirm \
+    {{- range .packages.native }}
+        {{ . }} \
+    {{- end }}
+
+    # Instalação de pacotes AUR se yay ou paru estiver disponível
+    AUR_HELPER=""
+    if command -v yay &> /dev/null; then
+        AUR_HELPER="yay"
+    elif command -v paru &> /dev/null; then
+        AUR_HELPER="paru"
+    fi
+
+    if [ -n "$AUR_HELPER" ]; then
+        echo "AUR helper ($AUR_HELPER) detectado. Instalando pacotes AUR..."
+        $AUR_HELPER -S --needed --noconfirm \
+        {{- range .packages.aur }}
+            {{ . }} \
+        {{- end }}
+    else
+        echo "Aviso: Nenhum AUR helper (yay/paru) encontrado. Os pacotes AUR não foram instalados automaticamente:"
+        {{- range .packages.aur }}
+        echo " - {{ . }}"
+        {{- end }}
+    fi
+else
+    echo "Aviso: pacman não encontrado. Este script é otimizado para Arch Linux."
+fi
+
+echo "=== Instalação de pacotes concluída ==="
