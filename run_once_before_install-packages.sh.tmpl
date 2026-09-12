@@ -62,17 +62,14 @@ if command -v pacman &> /dev/null; then
     sudo systemctl enable bluetooth.service || true
     sudo systemctl enable greetd.service || true
 
-    # 3. Configurar Greetd (se instalado)
-    if [ -d /etc/greetd ]; then
-        echo "Configurando /etc/greetd/config.toml..."
-        sudo tee /etc/greetd/config.toml > /dev/null << 'EOF'
-[terminal]
-vt = 1
-
-[default_session]
-command = "tuigreet --time --remember --remember-session --cmd Hyprland"
-user = "greeter"
-EOF
+    # 3. Configurar Greetd copiando o arquivo versionado
+    if [ -d /etc/greetd ] || sudo mkdir -p /etc/greetd; then
+        echo "Copiando configuração do greetd para /etc/greetd/config.toml..."
+        if [ -f "{{ .chezmoi.sourceDir }}/system/greetd/config.toml" ]; then
+            sudo cp "{{ .chezmoi.sourceDir }}/system/greetd/config.toml" /etc/greetd/config.toml
+        else
+            echo "Aviso: Arquivo system/greetd/config.toml não encontrado no repositório."
+        fi
     fi
 
 else
