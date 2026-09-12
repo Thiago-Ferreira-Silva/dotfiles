@@ -8,7 +8,7 @@ if command -v pacman &> /dev/null; then
     echo "Gerenciador pacman detectado. Instalando pacotes nativos..."
     sudo pacman -S --needed --noconfirm \
     {{- range .packages.native }}
-        {{ . }} \
+        "{{ . }}" \
     {{- end }}
 
     # Instalação de pacotes AUR se yay ou paru estiver disponível
@@ -17,16 +17,30 @@ if command -v pacman &> /dev/null; then
         AUR_HELPER="yay"
     elif command -v paru &> /dev/null; then
         AUR_HELPER="paru"
+    else
+        echo "AUR helper não detectado. Instalando yay-bin de forma automatizada..."
+        # Instala dependências de compilação necessárias para o yay
+        sudo pacman -S --needed --noconfirm git base-devel
+        
+        # Faz o clone e compila o yay-bin no diretório /tmp
+        rm -rf /tmp/yay-bin
+        git clone https://aur.archlinux.org/yay-bin.git /tmp/yay-bin
+        (cd /tmp/yay-bin && makepkg -si --noconfirm)
+        rm -rf /tmp/yay-bin
+        
+        if command -v yay &> /dev/null; then
+            AUR_HELPER="yay"
+        fi
     fi
 
     if [ -n "$AUR_HELPER" ]; then
         echo "AUR helper ($AUR_HELPER) detectado. Instalando pacotes AUR..."
         $AUR_HELPER -S --needed --noconfirm \
         {{- range .packages.aur }}
-            {{ . }} \
+            "{{ . }}" \
         {{- end }}
     else
-        echo "Aviso: Nenhum AUR helper (yay/paru) encontrado. Os pacotes AUR não foram instalados automaticamente:"
+        echo "Erro: Não foi possível configurar ou detectar um AUR helper. Os seguintes pacotes AUR precisam ser instalados manualmente:"
         {{- range .packages.aur }}
         echo " - {{ . }}"
         {{- end }}
