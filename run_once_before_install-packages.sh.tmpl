@@ -45,8 +45,38 @@ if command -v pacman &> /dev/null; then
         echo " - {{ . }}"
         {{- end }}
     fi
+
+    echo "=== Configurando serviços e recursos de sistema (fora do HOME) ==="
+
+    # 1. Configurar Zsh como shell padrão
+    if [ -x /bin/zsh ]; then
+        if [ "$SHELL" != "/bin/zsh" ]; then
+            echo "Alterando shell padrão para /bin/zsh..."
+            chsh -s /bin/zsh || sudo chsh -s /bin/zsh "$USER"
+        fi
+    fi
+
+    # 2. Habilitar serviços essenciais no Systemd
+    echo "Habilitando serviços essenciais no systemd..."
+    sudo systemctl enable NetworkManager.service || true
+    sudo systemctl enable bluetooth.service || true
+    sudo systemctl enable greetd.service || true
+
+    # 3. Configurar Greetd (se instalado)
+    if [ -d /etc/greetd ]; then
+        echo "Configurando /etc/greetd/config.toml..."
+        sudo tee /etc/greetd/config.toml > /dev/null << 'EOF'
+[terminal]
+vt = 1
+
+[default_session]
+command = "tuigreet --time --remember --remember-session --cmd Hyprland"
+user = "greeter"
+EOF
+    fi
+
 else
     echo "Aviso: pacman não encontrado. Este script é otimizado para Arch Linux."
 fi
 
-echo "=== Instalação de pacotes concluída ==="
+echo "=== Instalação e configuração do sistema concluídas ==="

@@ -16,14 +16,27 @@ Para clonar e aplicar todo o ambiente de dotfiles e dependências em uma instala
    *(Ou se já clonou o repositório localmente, execute `./install.sh`)*
 3. **Preencha os prompts interativos** do Chezmoi (Nome, E-mail, etc.).
 4. O script executará automaticamente:
-   - A instalação de pacotes nativos (`pacman`) e AUR (`yay`/`paru`).
-   - A aplicação de todos os arquivos de configuração (Hyprland, Waybar, Neovim, Zsh, etc.).
+   - A instalação de pacotes nativos (`pacman`) e AUR (`yay`/`paru` com auto-bootstrap se necessário).
+   - A configuração de recursos de sistema fora do `$HOME`:
+     - Altera o shell padrão para `/bin/zsh`.
+     - Habilita serviços essenciais no Systemd (`NetworkManager`, `bluetooth`, `greetd`).
+     - Configura o gerenciador de login (`/etc/greetd/config.toml` para iniciar o Hyprland via `tuigreet`).
+   - A aplicação de todos os arquivos de configuração (Hyprland, Waybar, Neovim, Zsh, Qt5ct, Qt6ct, etc.).
    - A instalação de dependências Python e compilação inicial do **Theme Engine**.
-5. Reinicie a sessão gráfica para carregar o Hyprland com todas as configurações.
+5. Reinicie o computador para carregar o greeter e iniciar a sessão gráfica com todas as configurações.
 
 ---
 
-## 📦 2. Manual de Adição de Novos Pacotes
+## ⚙️ 2. Gerenciamento de Recursos de Sistema (Fora do `/home`)
+
+Como o Chezmoi gerencia nativamente apenas o diretório do usuário (`$HOME`), as configurações de sistema que residem em `/etc/` são tratadas automaticamente pelo script de pré-instalação (`run_once_before_install-packages.sh.tmpl`):
+- **Greeter (`greetd`):** O arquivo `/etc/greetd/config.toml` é gerado automaticamente apontando para o `tuigreet` com inicialização do Hyprland.
+- **Shell Padrão:** O comando `chsh -s /bin/zsh` configura o Zsh como shell do usuário.
+- **Serviços:** NetworkManager, Bluetooth e Greetd são habilitados via `systemctl enable`.
+
+---
+
+## 📦 3. Manual de Adição de Novos Pacotes
 
 Para garantir que novos programas instalados no sistema passem a fazer parte da lista reproduzível:
 
@@ -42,7 +55,7 @@ Para garantir que novos programas instalados no sistema passem a fazer parte da 
 
 ---
 
-## 🎨 3. Manual de Criação e Edição de Temas (Theme Engine)
+## 🎨 4. Manual de Criação e Edição de Temas (Theme Engine)
 
 O sistema de temas centralizado gerencia a estética do Hyprland, Waybar, Rofi, Foot, SwayNC, Hyprlock e Wlogout.
 
@@ -61,7 +74,7 @@ O sistema de temas centralizado gerencia a estética do Hyprland, Waybar, Rofi, 
 
 ---
 
-## 🔒 4. Manual de Gerenciamento de Segredos (Secrets)
+## 🔒 5. Manual de Gerenciamento de Segredos (Secrets)
 
 Caso precise gerenciar chaves de API, tokens de acesso ou configurações privadas:
 
@@ -73,7 +86,7 @@ Caso precise gerenciar chaves de API, tokens de acesso ou configurações privad
 
 ---
 
-## 🔄 5. Fluxo de Trabalho Contínuo (Desenvolvimento e Alterações)
+## 🔄 6. Fluxo de Trabalho Contínuo (Desenvolvimento e Alterações)
 
 Sempre que modificar qualquer configuração diretamente no sistema:
 1. Atualize o rastreamento no chezmoi:
