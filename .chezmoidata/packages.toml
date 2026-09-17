@@ -11,6 +11,7 @@ native = [
     "chezmoi",
     "chromium",
     "cliphist",
+    "docker",
     "dolphin",
     "dolphin-plugins",
     "dosfstools",
